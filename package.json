@@ -1,0 +1,57 @@
+{
+  "name": "armour-antd",
+  "version": "0.0.8",
+  "description": "The custom components for Ant Design!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shenqiuhui/armour-antd"
+  },
+  "main": "dist",
+  "jsnext:main": "next.js",
+  "scripts": {
+    "start": "npm run build",
+    "build": "babel src -d dist --ignore 'src/**/*.css' --copy-files",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "armour",
+    "antd",
+    "custom",
+    "component",
+    "components"
+  ],
+  "author": "PandaShen",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "antd": "^3.9.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "6.9.0"
+          },
+          "useBuiltIns": "usage"
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  }
+}
