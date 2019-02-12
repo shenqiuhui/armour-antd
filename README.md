@@ -22,13 +22,13 @@ ReactDOM.render(<BatchOperationTables/>, mountNode);
 
 ## 按需加载
 
-**使用 `babel-plugin-armour-import` 插件, 在 `.babelrc` 或者 `webpack` 配置文件 `babel-loader` 配置项中进行配置。**
+**使用 [`babel-plugin-armour-import`](https://github.com/shenqiuhui/babel-plugin-armour-import) 插件, 在 `.babelrc` 或者 `webpack` 配置文件 `babel-loader` 配置项中进行配置。**
 
 ```js
 plugins: [
   [
     'armour-import',
-    { libararyName: 'armour-antd' }
+    { libararyName: 'armour-antd'
   ]
 ]
 ```
