@@ -128,6 +128,8 @@ class BatchOperationTables extends _react.Component {
       // 表格默认支持分页选项
       styleOptions = {},
       // 样式选项
+      textObtions = {},
+      // 文本选项
       updatePagination,
       // 更新页码函数
       ejectCollectData // 将目标表格收集的数据合集（selectedRows）更新到外层组件或 Redux 的方法
@@ -144,7 +146,19 @@ class BatchOperationTables extends _react.Component {
       // 表格大小，可选 small、middle
       bordered = false // 是否有边框
 
-    } = styleOptions; // 复选框操作配置
+    } = styleOptions;
+    const {
+      dataEmptyText = '暂无数据',
+      // 数据表格无数据提示文本
+      collectEmptyText = '暂无选中数据',
+      // 收集数据表格无选中提示文本
+      dataTotalText = ['共', '项'],
+      // 数据总数文本
+      collectTotalText = ['已选择', '项'],
+      // 已选中数据总数文本
+      sepText = '' // 单表格时数据总数文本和已选中数据总数文本分隔符，默认为一个制表符
+
+    } = textObtions; // 复选框操作配置
 
     const rowSelection = {
       selectedRowKeys,
@@ -157,11 +171,11 @@ class BatchOperationTables extends _react.Component {
     }; // 未搜索到数据提示
 
     const noData = {
-      emptyText: '未搜索到相关数据'
+      emptyText: dataEmptyText
     }; // 选中数据为空提示
 
-    const empty = {
-      emptyText: '选中数据为空'
+    const noCollect = {
+      emptyText: collectEmptyText
     }; // 分页器配置
 
     const pagination = {
@@ -183,12 +197,12 @@ class BatchOperationTables extends _react.Component {
       })
     }; // 将合集数据源处理并渲染（处理 key）
 
-    let selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
+    const selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
     return _react.default.createElement("div", {
       className: wrapperStyle
     }, _react.default.createElement("div", null, _react.default.createElement("div", {
       className: totalStyle
-    }, "\u5171 ", total, " \u9879"), _react.default.createElement(_antd.Table, {
+    }, _react.default.createElement("span", null, dataTotalText[0], " ", total, " ", dataTotalText[1]), !collectTable && _react.default.createElement(_react.Fragment, null, sepText ? _react.default.createElement("span", null, sepText) : _react.default.createElement("span", null, "\u2002"), _react.default.createElement("span", null, collectTotalText[0], " ", selectedRows.length, " ", collectTotalText[1]))), _react.default.createElement(_antd.Table, {
       className: tableStyle,
       bordered: bordered,
       size: size,
@@ -200,14 +214,14 @@ class BatchOperationTables extends _react.Component {
       loading: loading
     })), dataSource.length > 0 && collectTable && _react.default.createElement("div", null, _react.default.createElement("div", {
       className: totalStyle
-    }, "\u5DF2\u9009\u62E9 ", selectedRowsList.length, " \u9879"), _react.default.createElement(_antd.Table, {
+    }, collectTotalText[0], " ", selectedRowsList.length, " ", collectTotalText[1]), _react.default.createElement(_antd.Table, {
       className: tableStyle,
       bordered: bordered,
       size: size,
       columns: columns,
       pagination: paginationCollect,
       dataSource: selectedRowsList,
-      locale: empty
+      locale: noCollect
     })));
   }
 

@@ -28,7 +28,7 @@ ReactDOM.render(<BatchOperationTables/>, mountNode);
 plugins: [
   [
     'armour-import',
-    { libararyName: 'armour-antd'
+    { libararyName: 'armour-antd' }
   ]
 ]
 ```
