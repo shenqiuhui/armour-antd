@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Table } from 'antd';
 import 'antd/lib/table/style/css';
 import './index.css';
@@ -91,6 +91,7 @@ export default class BatchOperationTables extends Component {
       collectTable = false, // 是否显示收集的表格
       pageSizeOptions = ['10', '20', '30', '40', '50'], // 表格默认支持分页选项
       styleOptions = {}, // 样式选项
+      textObtions = {}, // 文本选项
       updatePagination, // 更新页码函数
       ejectCollectData, // 将目标表格收集的数据合集（selectedRows）更新到外层组件或 Redux 的方法
     } = this.props;
@@ -102,6 +103,14 @@ export default class BatchOperationTables extends Component {
       size = 'default', // 表格大小，可选 small、middle
       bordered = false // 是否有边框
     } = styleOptions;
+
+    const {
+      dataEmptyText = '暂无数据', // 数据表格无数据提示文本
+      collectEmptyText = '暂无选中数据', // 收集数据表格无选中提示文本
+      dataTotalText = ['共', '项'], // 数据总数文本
+      collectTotalText = ['已选择', '项'], // 已选中数据总数文本
+      sepText = '', // 单表格时数据总数文本和已选中数据总数文本分隔符，默认为一个制表符
+    } = textObtions;
 
     // 复选框操作配置
     const rowSelection = {
@@ -116,12 +125,12 @@ export default class BatchOperationTables extends Component {
 
     // 未搜索到数据提示
     const noData = {
-      emptyText: '未搜索到相关数据'
+      emptyText: dataEmptyText
     };
 
     // 选中数据为空提示
-    const empty = {
-      emptyText: '选中数据为空'
+    const noCollect = {
+      emptyText: collectEmptyText
     };
 
     // 分页器配置
@@ -144,13 +153,23 @@ export default class BatchOperationTables extends Component {
     };
 
     // 将合集数据源处理并渲染（处理 key）
-    let selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
+    const selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
 
     return (
       <div className={wrapperStyle}>
         <div>
           <div className={totalStyle}>
-            共 {total} 项
+            <span>{dataTotalText[0]} {total} {dataTotalText[1]}</span>
+            {
+              !collectTable && (
+                <Fragment>
+                  {
+                    sepText ? <span>{sepText}</span> : <span>&ensp;</span>
+                  }
+                  <span>{collectTotalText[0]} {selectedRows.length} {collectTotalText[1]}</span>
+                </Fragment>
+              )
+            }
           </div>
           <Table
             className={tableStyle}
@@ -168,7 +187,7 @@ export default class BatchOperationTables extends Component {
           dataSource.length > 0 && collectTable && (
             <div>
               <div className={totalStyle}>
-                已选择 {selectedRowsList.length} 项
+                {collectTotalText[0]} {selectedRowsList.length} {collectTotalText[1]}
               </div>
               <Table
                 className={tableStyle}
@@ -177,7 +196,7 @@ export default class BatchOperationTables extends Component {
                 columns={columns}
                 pagination={paginationCollect}
                 dataSource={selectedRowsList}
-                locale={empty}
+                locale={noCollect}
               />
             </div>
           )

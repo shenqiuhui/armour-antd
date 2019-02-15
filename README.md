@@ -74,7 +74,8 @@ import BatchOperationTables from 'armour-antd/dist/components/BatchOperationTabl
 | pageSizeOptions | 指定每页可以显示多少条，该配置同时在数据表格和已选中数据列表生效 | string[] | ['10', '20', '30', '40', '50'] |
 | updatePagination | 修改数据表格分页器页码 `current` 和每页条数 `pageSize` 时触发，提供当前选中页码数和每页条数 | Function(page, pageSize) | noop |
 | ejectCollectData | 数据表格勾选状态发生变化时触发，提供所有页码被勾选后的数据合集 | Function(selectedRows) | noop |
-| styleOptions | 用于设置 `BatchOperationTables` 组件的样式配置 | styleOptionsProps{} | - |
+| styleOptions | 用于配置 `BatchOperationTables` 组件的样式选项集合 | styleOptionsProps{} | - |
+| textObtions | 用于配置 `BatchOperationTables` 组件的文本选项集合 | textObtions{} | - |
 
 #### styleOptions
 
@@ -85,3 +86,13 @@ import BatchOperationTables from 'armour-antd/dist/components/BatchOperationTabl
 | tableStyle | 组件表格容器类名，用于设置组件表格的样式 | string | 'default-table-class' |
 | size | 表格大小，同 `Ant Design` 的 `Table` | default \| middle \| small | default |
 | bordered | 是否展示外边框和列边框，同 `Ant Design` 的 `Table` | boolean | false |
+
+#### textObtions
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| dataEmptyText | 数据表格无数据提示文本 | string | '暂无数据' |
+| collectEmptyText | 已选中数据列表无数据提示文本 | string | '暂无选中数据' |
+| dataTotalText | 数据总数文本 | string[] | ['共', '项'] |
+| collectTotalText | 已选中数据总数文本 | string[] | ['已选择', '项'] |
+| sepText | 单表格（`collectTable` 未设置或值为 `false`）时，数据总数文本和已选中数据总数文本的分隔符，双表格时该配置不生效 | string | \&ensp; |
