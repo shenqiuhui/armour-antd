@@ -61,9 +61,9 @@ import BatchOperationTables from 'armour-antd/dist/components/BatchOperationTabl
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | columns | 表格列的配置描述，同 `Ant Design` 的 `Table` , 具体见 https://ant.design/components/table-cn/#Column | ColumnProps[] | - |
-| dataSource | 数据数组 | any[] | [] |
+| dataSource | 数据数组 | object[] | [] |
 | rowId | `dataSource` 中每一项数据的唯一标识字段 | string | 'id' |
-| selectedRows | 存储数据表格中被选中项，可以是父级组件的 `state` 或 `redux` 等状态管理的 `state` 中某一个属性的引用 | any[] | [] |
+| selectedRows | 存储数据表格中被选中项，可以是父级组件的 `state` 或 `redux` 等状态管理的 `state` 中某一个属性的引用 | object[] | [] |
 | total | 数据表格的数据总数，用于实现分页功能 | number | 0 |
 | current | 分页器默认选中的页码 | number | 1 |
 | pageSize | 数据表格默认每页数据条数 | number | 10 |

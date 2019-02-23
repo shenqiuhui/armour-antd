@@ -1,5 +1,1 @@
-import BatchOperationTables from './components/BatchOperationTables';
-
-export {
-  BatchOperationTables
-}
+export { default as BatchOperationTables } from './components/BatchOperationTables';

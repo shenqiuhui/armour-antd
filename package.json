@@ -22,7 +22,7 @@
     "component",
     "components"
   ],
-  "author": "PandaShen",
+  "author": "Panda Shen",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16.3.2",

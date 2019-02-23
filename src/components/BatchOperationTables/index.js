@@ -10,32 +10,55 @@ export default class BatchOperationTables extends Component {
     pageSizeCollect: 10 // 选中数据默认条数
   }
 
-  // 给传入的 dataSourse 增加 key 属性
-  addKeyToDateSourse = (dataSource) => dataSource.map((val, i) => (val.key = i, val));
+  /**
+   * 给传入的 dataSourse 增加 key 属性
+   * @param {Array<Object>} [dataSource] 数据源
+   */
+  addKeyToDateSourse = dataSource => dataSource.map((val, i) => (val.key = i, val));
 
-  // 生成渲染目标表格的数据源
-  selectedRowsToArray = (selectedRows) => selectedRows.reduce((prev, next, current) => {
+  /**
+   * 生成渲染目标表格的数据源
+   * @param {Array<Object>} [selectedRows] 选中的数据数组
+   */
+  selectedRowsToArray = selectedRows => selectedRows.reduce((prev, next, current) => {
     let item = JSON.parse(JSON.stringify(next));
     item.key = current + 1;
     return (prev.push(item), prev);
   }, []);
 
-  // 将 Map 转换成数组进行存储（过滤 selected 为 false 的项）
+  /**
+   * 将 Map 转换成数组进行存储（过滤 selected 为 false 的项）
+   * @param {Object} [selectedRowsMap] 存储选中数据的 Map
+   */
   selectedMapToArray = selectedRowsMap => Object.keys(selectedRowsMap).reduce((target, rowId) => {
     return (selectedRowsMap[rowId].selected && target.push(selectedRowsMap[rowId].record), target);
   }, []).sort((a, b) => b.orderMark - a.orderMark);
 
-  // 将数组转换成 Map 进行比对
+  /**
+   * 将数组转换成 Map 进行比对
+   * @param {String} [rowId] 遍历数据的唯一标识字段
+   * @param {Boolean} [selected] 设定 Map 每项是否选中
+   * @param {Array} [source] 存储选中数据的 Map
+   * @param {Object} [target] 生成 Map 的初始值
+   */
   selectedArrayToMap = (rowId, selected, source, target = {}) => {
     return (source.forEach(value => (target[value[rowId]] = { [rowId]: value[rowId], record: value, selected })), target);
   }
 
-  // 检测当前数据源，找到索引回显选中状态（方法）
+  /**
+   * 检测当前数据源，找到索引回显选中状态（方法）
+   * @param {String} [rowId] 遍历数据的唯一标识字段
+   * @param {Array<Object>} [dataSource] 数据源
+   * @param {Object} [selectedRowsMap] 存储选中数据的 Map
+   */
   findSelectedRowKeys = (rowId, dataSource, selectedRowsMap) => dataSource.reduce((prev, next, index) => {
     return (selectedRowsMap[next[rowId]] && selectedRowsMap[next[rowId]].selected && prev.push(index), prev);
   }, []);
 
-  // 对选中数据增加排序字段
+  /**
+   * 对选中数据增加排序字段
+   * @param {Object|Array<Object>} [source] 当前被勾选的某项或某几项
+   */
   createOrderMark = source => {
     let selectedNum = this.selectedMapToArray(this.state.selectedRowsMap).length;
     let newSelectRows = Array.isArray(source) ? source : [source];
@@ -43,7 +66,13 @@ export default class BatchOperationTables extends Component {
     return (newSelectRows.reverse().forEach((v, idx) => (v.orderMark = idx + selectedNum)), newSelectRows);
   }
 
-  // 将新选中的项与之前选中项求和发射到组件外部（父组件的 state 或 Redux 中）
+  /**
+   * 将新选中的项与之前选中项求和发射到组件外部（父组件的 state 或 Redux 等状态管理中）
+   * @param {String} [rowId] 遍历数据的唯一标识字段
+   * @param {Boolean} [selected] 设定 Map 每项是否选中
+   * @param {Array} [source] 存储选中数据的 Map
+   * @param {Function} [callback] 在组件 state 内部更新 selectedRowsMap 后执行的回调
+   */
   sendDataOutComponent = (rowId, selected, source, callback) => {
     this.setState({
       selectedRowsMap: {
@@ -53,8 +82,11 @@ export default class BatchOperationTables extends Component {
     }, callback);
   }
 
-  // 初始化组件计算 Map 和选中项索引集合存入 state 的 init 方法
-  initSelectedRowMapAndKeys = (props) => {
+  /**
+   * 初始化组件计算 Map 和选中项索引集合存入 state 的 init 方法
+   * @param {Object} [props] 组件外部传入的属性
+   */
+  initSelectedRowMapAndKeys = props => {
     let { dataSource = [], selectedRows = [], rowId = 'id' } = props;
 
     // 计算 Map 和选中项索引集合存入 state

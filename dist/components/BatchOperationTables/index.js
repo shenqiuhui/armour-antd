@@ -31,7 +31,11 @@ class BatchOperationTables extends _react.Component {
       selectedRowKeys: [],
       // 选中数据在当前页索引集合
       pageSizeCollect: 10 // 选中数据默认条数
-      // 给传入的 dataSourse 增加 key 属性
+
+      /**
+       * 给传入的 dataSourse 增加 key 属性
+       * @param {Array<Object>} [dataSource] 数据源
+       */
 
     });
 
