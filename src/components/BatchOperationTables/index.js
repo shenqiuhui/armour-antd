@@ -38,7 +38,7 @@ export default class BatchOperationTables extends Component {
    * 将数组转换成 Map 进行比对
    * @param {String} [rowId] 遍历数据的唯一标识字段
    * @param {Boolean} [selected] 设定 Map 每项是否选中
-   * @param {Array} [source] 存储选中数据的 Map
+   * @param {Array<Object>} [source] 存储选中数据的 Map
    * @param {Object} [target] 生成 Map 的初始值
    */
   selectedArrayToMap = (rowId, selected, source, target = {}) => {
@@ -70,7 +70,7 @@ export default class BatchOperationTables extends Component {
    * 将新选中的项与之前选中项求和发射到组件外部（父组件的 state 或 Redux 等状态管理中）
    * @param {String} [rowId] 遍历数据的唯一标识字段
    * @param {Boolean} [selected] 设定 Map 每项是否选中
-   * @param {Array} [source] 存储选中数据的 Map
+   * @param {Array<Object>} [source] 存储选中数据的 Map
    * @param {Function} [callback] 在组件 state 内部更新 selectedRowsMap 后执行的回调
    */
   sendDataOutComponent = (rowId, selected, source, callback) => {
