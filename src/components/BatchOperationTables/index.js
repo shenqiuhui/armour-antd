@@ -11,18 +11,12 @@ export default class BatchOperationTables extends Component {
   }
 
   /**
-   * 给传入的 dataSourse 增加 key 属性
-   * @param {Array<Object>} [dataSource] 数据源
+   *  给数据数组的每一项增加 key 字段
+   * @param {Array<Object>} [data] 存储数据的数组
    */
-  addKeyToDateSourse = dataSource => dataSource.map((val, i) => (val.key = i, val));
-
-  /**
-   * 生成渲染目标表格的数据源
-   * @param {Array<Object>} [selectedRows] 选中的数据数组
-   */
-  selectedRowsToArray = selectedRows => selectedRows.reduce((prev, next, current) => {
+  addKeyToData = data => data.reduce((prev, next, current) => {
     let item = JSON.parse(JSON.stringify(next));
-    item.key = current + 1;
+    item.key = current;
     return (prev.push(item), prev);
   }, []);
 
@@ -185,7 +179,7 @@ export default class BatchOperationTables extends Component {
     };
 
     // 将合集数据源处理并渲染（处理 key）
-    const selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
+    const selectedRowsList = collectTable && this.addKeyToData(selectedRows);
 
     return (
       <div className={wrapperStyle}>
@@ -210,7 +204,7 @@ export default class BatchOperationTables extends Component {
             rowSelection={rowSelection}
             columns={collectTable ? columns.slice(1, -1) : columns}
             pagination={pagination}
-            dataSource={this.addKeyToDateSourse(dataSource)}
+            dataSource={this.addKeyToData(dataSource)}
             locale={noData}
             loading={loading}
           />

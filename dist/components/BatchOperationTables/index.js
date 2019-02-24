@@ -33,17 +33,15 @@ class BatchOperationTables extends _react.Component {
       pageSizeCollect: 10 // 选中数据默认条数
 
       /**
-       * 给传入的 dataSourse 增加 key 属性
-       * @param {Array<Object>} [dataSource] 数据源
+       *  给数据数组的每一项增加 key 字段
+       * @param {Array<Object>} [data] 存储数据的数组
        */
 
     });
 
-    _defineProperty(this, "addKeyToDateSourse", dataSource => dataSource.map((val, i) => (val.key = i, val)));
-
-    _defineProperty(this, "selectedRowsToArray", selectedRows => selectedRows.reduce((prev, next, current) => {
+    _defineProperty(this, "addKeyToData", data => data.reduce((prev, next, current) => {
       let item = JSON.parse(JSON.stringify(next));
-      item.key = current + 1;
+      item.key = current;
       return prev.push(item), prev;
     }, []));
 
@@ -201,7 +199,7 @@ class BatchOperationTables extends _react.Component {
       })
     }; // 将合集数据源处理并渲染（处理 key）
 
-    const selectedRowsList = collectTable && this.selectedRowsToArray(selectedRows);
+    const selectedRowsList = collectTable && this.addKeyToData(selectedRows);
     return _react.default.createElement("div", {
       className: wrapperStyle
     }, _react.default.createElement("div", null, _react.default.createElement("div", {
@@ -213,7 +211,7 @@ class BatchOperationTables extends _react.Component {
       rowSelection: rowSelection,
       columns: collectTable ? columns.slice(1, -1) : columns,
       pagination: pagination,
-      dataSource: this.addKeyToDateSourse(dataSource),
+      dataSource: this.addKeyToData(dataSource),
       locale: noData,
       loading: loading
     })), dataSource.length > 0 && collectTable && _react.default.createElement("div", null, _react.default.createElement("div", {
