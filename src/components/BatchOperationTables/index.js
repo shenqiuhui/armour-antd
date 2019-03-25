@@ -45,19 +45,17 @@ export default class BatchOperationTables extends Component {
    * @param {Array<Object>} [dataSource] 数据源
    * @param {Object} [selectedRowsMap] 存储选中数据的 Map
    */
-  findSelectedRowKeys = (rowId, dataSource, selectedRowsMap) => dataSource.reduce((prev, next, index) => {
-    return (selectedRowsMap[next[rowId]] && selectedRowsMap[next[rowId]].selected && prev.push(index), prev);
-  }, []);
+  findSelectedRowKeys = (rowId, selectedRows) => selectedRows.map((record) => record[rowId]);
 
   /**
    * 对选中数据增加排序字段
    * @param {Object|Array<Object>} [source] 当前被勾选的某项或某几项
    */
   createOrderMark = source => {
-    let selectedNum = this.selectedMapToArray(this.state.selectedRowsMap).length;
+    let { orderMark = 0 } = this.selectedMapToArray(this.state.selectedRowsMap)[0] || {};
     let newSelectRows = Array.isArray(source) ? source : [source];
 
-    return (newSelectRows.reverse().forEach((v, idx) => (v.orderMark = idx + selectedNum)), newSelectRows);
+    return (newSelectRows.reverse().forEach((v, idx) => (v.orderMark = ++idx + orderMark)), newSelectRows);
   }
 
   /**
@@ -81,11 +79,11 @@ export default class BatchOperationTables extends Component {
    * @param {Object} [props] 组件外部传入的属性
    */
   initSelectedRowMapAndKeys = props => {
-    let { dataSource = [], selectedRows = [], rowId = 'id' } = props;
+    let { selectedRows = [], rowId = 'id' } = props;
 
     // 计算 Map 和选中项索引集合存入 state
     let selectedRowsMap = this.selectedArrayToMap(rowId, true, selectedRows);
-    let selectedRowKeys = this.findSelectedRowKeys(rowId, dataSource, selectedRowsMap);
+    let selectedRowKeys = this.findSelectedRowKeys(rowId, selectedRows);
 
     this.setState({ selectedRowsMap, selectedRowKeys });
   }
@@ -198,6 +196,7 @@ export default class BatchOperationTables extends Component {
             }
           </div>
           <Table
+            rowKey={rowId}
             className={tableStyle}
             bordered={bordered}
             size={size}

@@ -57,14 +57,14 @@ class BatchOperationTables extends _react.Component {
       }), target;
     });
 
-    _defineProperty(this, "findSelectedRowKeys", (rowId, dataSource, selectedRowsMap) => dataSource.reduce((prev, next, index) => {
-      return selectedRowsMap[next[rowId]] && selectedRowsMap[next[rowId]].selected && prev.push(index), prev;
-    }, []));
+    _defineProperty(this, "findSelectedRowKeys", (rowId, selectedRows) => selectedRows.map(record => record[rowId]));
 
     _defineProperty(this, "createOrderMark", source => {
-      let selectedNum = this.selectedMapToArray(this.state.selectedRowsMap).length;
+      let {
+        orderMark = 0
+      } = this.selectedMapToArray(this.state.selectedRowsMap)[0] || {};
       let newSelectRows = Array.isArray(source) ? source : [source];
-      return newSelectRows.reverse().forEach((v, idx) => v.orderMark = idx + selectedNum), newSelectRows;
+      return newSelectRows.reverse().forEach((v, idx) => v.orderMark = ++idx + orderMark), newSelectRows;
     });
 
     _defineProperty(this, "sendDataOutComponent", (rowId, selected, source, callback) => {
@@ -75,13 +75,12 @@ class BatchOperationTables extends _react.Component {
 
     _defineProperty(this, "initSelectedRowMapAndKeys", props => {
       let {
-        dataSource = [],
         selectedRows = [],
         rowId = 'id'
       } = props; // 计算 Map 和选中项索引集合存入 state
 
       let selectedRowsMap = this.selectedArrayToMap(rowId, true, selectedRows);
-      let selectedRowKeys = this.findSelectedRowKeys(rowId, dataSource, selectedRowsMap);
+      let selectedRowKeys = this.findSelectedRowKeys(rowId, selectedRows);
       this.setState({
         selectedRowsMap,
         selectedRowKeys
@@ -205,6 +204,7 @@ class BatchOperationTables extends _react.Component {
     }, _react.default.createElement("div", null, _react.default.createElement("div", {
       className: totalStyle
     }, _react.default.createElement("span", null, dataTotalText[0], " ", total, " ", dataTotalText[1]), !collectTable && _react.default.createElement(_react.Fragment, null, sepText ? _react.default.createElement("span", null, sepText) : _react.default.createElement("span", null, "\u2002"), _react.default.createElement("span", null, collectTotalText[0], " ", selectedRows.length, " ", collectTotalText[1]))), _react.default.createElement(_antd.Table, {
+      rowKey: rowId,
       className: tableStyle,
       bordered: bordered,
       size: size,
